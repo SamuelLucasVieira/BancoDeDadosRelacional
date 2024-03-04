@@ -1,0 +1,37 @@
+-- criar banco de dados bd_aula03
+CREATE DATABASE bd_aula03;
+
+
+-- criar tabelas do MER 
+DROP TABLE tbl_cliente;
+DROP TABLE tbl_emprestimos;
+DROP TABLE tbl_livros;
+DROP TABLE tbl_titulo;
+CREATE TABLE tbl_cliente(codigo_cliente INTEGER PRIMARY KEY, Nome char NOT NULL, Cidade char, Endereco char);
+CREATE TABLE tbl_emprestimos (numero_emprestimo INTEGER PRIMARY KEY,codigo_cliente INTEGER ,codigo_livro INTEGER );
+CREATE TABLE tbl_titulo (codigo_titulo INTEGER PRIMARY KEY, titulo char NOT NULL, descricao char, categoria char);
+CREATE TABLE tbl_livros (cod_livro INTEGER PRIMARY KEY, codigo_titulo INTEGER UNIQUE, status char);
+-- criar domains
+CREATE DOMAIN chk_categoria text check(value in('DRAMA','COMEDIA'));
+CREATE DOMAIN chk_status text check (value in ('DISPONIVEL','ALUGADO'));
+drop domain chk_status;
+drop domain chk_categoria;
+
+
+-- adicionar domain a tabela
+ALTER TABLE tbl_titulo ALTER categoria type chk_categoria;
+ALTER TABLE  tbl_livros ALTER status type chk_status ;
+ALTER TABLE tbl_livros ALTER COLUMN status SET DEFAULT 'DISPONIVEL';
+
+
+-- adicionar chaves estrangeiras
+DROP TABLE tbl_cliente;
+DROP TABLE tbl_emprestimos;
+DROP TABLE tbl_livros;
+DROP TABLE tbl_titulo;
+CREATE TABLE tbl_cliente (codigo_cliente INTEGER PRIMARY KEY,Nome CHAR NOT NULL,Cidade CHAR,Endereco CHAR);
+CREATE TABLE tbl_titulo (codigo_titulo INTEGER PRIMARY KEY,titulo CHAR NOT NULL,descricao CHAR,categoria CHAR);
+CREATE TABLE tbl_livros (cod_livro INTEGER PRIMARY KEY,codigo_titulo INTEGER UNIQUE,status CHAR,FOREIGN KEY (codigo_titulo) REFERENCES tbl_titulo (codigo_titulo));
+CREATE TABLE tbl_emprestimos (numero_emprestimo INTEGER PRIMARY KEY,codigo_cliente INTEGER,codigo_livro INTEGER,type text DEFAULT 'DISPONIVEL',FOREIGN KEY (codigo_cliente) REFERENCES tbl_cliente (codigo_cliente),FOREIGN KEY (codigo_livro) REFERENCES tbl_livros (cod_livro));
+or 
+ALTER TABLE tbl_livros ALTER COLUMN status SET DEFAULT 'DISPONIVEL';
