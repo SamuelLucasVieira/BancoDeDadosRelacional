@@ -8,7 +8,7 @@ DROP TABLE tbl_emprestimos;
 DROP TABLE tbl_livros;
 DROP TABLE tbl_titulo;
 CREATE TABLE tbl_cliente(codigo_cliente INTEGER PRIMARY KEY, Nome char NOT NULL, Cidade char, Endereco char);
-CREATE TABLE tbl_emprestimos (numero_emprestimo INTEGER PRIMARY KEY,codigo_cliente INTEGER  ,codigo_livro INTEGER  );
+CREATE TABLE tbl_emprestimo (numero_emprestimo INTEGER PRIMARY KEY,codigo_cliente INTEGER  ,codigo_livro INTEGER  );
 CREATE TABLE tbl_livros (cod_livro INTEGER PRIMARY KEY, codigo_titulo INTEGER UNIQUE, status char);
 CREATE TABLE tbl_titulo (codigo_titulo INTEGER PRIMARY KEY, titulo char NOT NULL, descricao char, categoria char);
 -- criar domains
@@ -33,7 +33,7 @@ ALTER TABLE tbl_emprestimo
 CREATE TABLE tbl_cliente (codigo_cliente INTEGER PRIMARY KEY,Nome CHAR NOT NULL,Cidade CHAR,Endereco CHAR);
 CREATE TABLE tbl_titulo (codigo_titulo INTEGER PRIMARY KEY,titulo CHAR NOT NULL,descricao CHAR,categoria CHAR);
 CREATE TABLE tbl_livros (cod_livro INTEGER PRIMARY KEY,codigo_titulo INTEGER UNIQUE,status CHAR,FOREIGN KEY (codigo_titulo) REFERENCES tbl_titulo (codigo_titulo));
-CREATE TABLE tbl_emprestimos (numero_emprestimo INTEGER PRIMARY KEY,codigo_cliente INTEGER,codigo_livro INTEGER,type text DEFAULT 'DISPONIVEL',FOREIGN KEY (codigo_cliente) REFERENCES tbl_cliente (codigo_cliente),FOREIGN KEY (codigo_livro) REFERENCES tbl_livros (cod_livro));
+CREATE TABLE tbl_emprestimo (numero_emprestimo INTEGER PRIMARY KEY,codigo_cliente INTEGER,codigo_livro INTEGER,type text DEFAULT 'DISPONIVEL',FOREIGN KEY (codigo_cliente) REFERENCES tbl_cliente (codigo_cliente),FOREIGN KEY (codigo_livro) REFERENCES tbl_livros (cod_livro));
 ALTER TABLE tbl_livros ALTER COLUMN status SET DEFAULT 'DISPONIVEL';
 or
 ALTER TABLE tbl_emprestimo ADD CONSTRAINT fk_codigo_livro FOREIGN KEY(codigo_livro) REFERENCES tbl_livros(cod_livro);
