@@ -39,6 +39,7 @@ SELECT p.nome, p.cor FROM tbl_peca p INNER JOIN tbl_estoque e ON p.cod_peca = e.
 
 --7 Listar o nome e a cor de todas as pecas de Londres
 SELECT p.nome, p.cor FROM tbl_peca p WHERE cidade = 'LONDRES';
+SELECT nome, cor FROM tbl_peca INTERSECT SELECT nome, cor FROM tbl_peca WHERE cidade = 'LONDRES';
 
 --8 Encontre o nome das peças que estão disponíveis em estoque em Londres e não estão disponíveis em estoque em Paris:
 SELECT DISTINCT(nome) FROM tbl_peca p INNER JOIN tbl_estoque e ON p.cod_peca = e.cod_peca WHERE p.cidade = 'LONDRES' AND NOT p.cidade = 'PARIS'; 
