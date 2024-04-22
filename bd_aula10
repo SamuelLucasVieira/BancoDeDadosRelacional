@@ -193,15 +193,20 @@ CREATE VIEW v_depcidadehouston (dep_name,cidade) as select d.nome,c.nome from tb
 
 --3 Crie uma visão denominada de v_opsalario, a qual lista a soma e média de todos os salários dos empregados.
 -- execute select * from v_opsalario
+
 CREATE VIEW v_opsalario (soma,media) as select sum(salario),avg(salario) from tbl_empregados;
 
 --4 Criar a view vw_empregados_salarial que exibe o nome e o salário de todos os empregados com salário acima de 5500.
 -- execute select * from v_empregados_salarial
+
 CREATE VIEW vw_empregados_salarial (nome,salario) as select nome,salario from tbl_empregados where salario > 5500;
 
 --5 criar uma view v_departemp para listar os departamentos e a quantidade de empregados em cada um
 -- listar os departamentos e as quantidades por orderm decrescente de quantidade.
+
 CREATE VIEW v_departemp (departamento,quantidade) AS SELECT d.nome, count(e.cod_empregado) FROM tbl_departamentos d JOIN tbl_empregados e ON d.cod_departamento = e.cod_departamento group by d.nome;
-select * from v_departemp order by quantidade desc;
+SELECT * FROM v_departemp ORDER BY quantidade DESC;
+
 --6 criar uma view v_departrouble para listar os nomes dos departamentos que possuem mais projetos do que empregados.
+
 CREATE VIEW v_departrouble (nome) AS SELECT d.nome FROM tbl_departamentos d LEFT JOIN tbl_projetos p ON d.cod_departamento = p.cod_departamento LEFT JOIN tbl_empregados e ON d.cod_departamento = e.cod_departamento GROUP BY d.nome HAVING COUNT(p.cod_projeto) > COUNT(e.cod_empregado);
