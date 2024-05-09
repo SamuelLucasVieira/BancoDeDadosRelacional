@@ -193,44 +193,71 @@ BEGIN
     RETURN resultado;
 END
 $$;
-
+SELECT * FROM fc_soma(<valor1>,<valor2>);
+DROP FUNCTION fc_soma;
 
 
 --2 Crie uma funcao denominada fc_maior_salario, que sem usar função agregada MAX, retorne o nome do empregado com o maior salario.
-CREATE FUNCTION fc_maior_salario (OUT maior int)
+CREATE FUNCTION fc_maior_salario (OUT maior real)
 language plpgsql AS
 $$
 BEGIN
     select salario INTO maior from tbl_empregados order by salario desc limit 1;
 END
 $$;
+SELECT * FROM fc_maior_salario();
+DROP FUNCTION fc_maior_salario;
+
 
 --3 crie a funcao fc_media_salario que retorna a media dos salarios dos empregados
-CREATE FUNCTION fc_media_salario (OUT media int)
+CREATE FUNCTION fc_media_salario (OUT media real)
 language plpgsql AS
 $$
 BEGIN
     select avg(salario) INTO media from tbl_empregados;
 END
 $$;
+SELECT * FROM fc_media_salario();
+DROP FUNCTION fc_media_salario;
 
 
 --4 Crie a funcao fc_salarios que recebe o código do empregado como parâmetro e retorne o salário, o salário acrescido de 10% e o salário reduzido em 15%.
-CREATE FUNCTION fc_salarios (codigo int)
-RETURN int
-language plpgsql AS
+CREATE FUNCTION fc_salarios (codigo int, OUT salario_atual real,OUT aumento real,OUT desconto real)
+LANGUAGE plpgsql AS
 $$
-DECLARE
-    salario int;
-    aumento real;
-    desconto real;
 BEGIN
-    
+    SELECT salario into salario_atual  FROM tbl_empregados WHERE cod_empregado = codigo ;
+    SELECT (salario * 1.10) into aumento  FROM tbl_empregados WHERE cod_empregado = codigo; 
+    SELECT (salario * 0.85)into desconto  FROM tbl_empregados WHERE cod_empregado = codigo ;
+
+END
+$$;
+SELECT * FROM fc_salarios(<valor codigo empregado>);
+DROP FUNCTION fc_salarios;    
 
 --5 Crie uma funcao denominada fc_projetos que liste o código e o nome de todos os projetos cadastrados.
 
-
+CREATE FUNCTION fc_projetos()
+RETURNS TABLE (cod_projeto int,nome text)
+language plpgsql AS
+$$
+BEGIN
+    RETURN QUERY
+    SELECT te.cod_projeto, te.nome FROM tbl_projetos as te;
+    RETURN;
+END
+$$; 
+SELECT * FROM fc_projetos();
+DROP FUNCTION fc_projetos;
 
 --6 Crie a funcao fc_proj_departmento que recebe o codigo do departamento e mostra quantos projetos o departamento possui
-
+CREATE FUNCTION fc_proj_departmento(codigo int, OUT Quantidade_projetos int )
+language plpgsql AS
+$$
+BEGIN
+    SELECT count(cod_projeto) into Quantidade_projetos from tbl_projetos where cod_departamento = codigo;
+END
+$$;
+SELECT * FROM fc_proj_departmento(<valor do departamento>);
+DROP FUNCTION fc_proj_departmento;
 
